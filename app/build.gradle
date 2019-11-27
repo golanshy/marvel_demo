@@ -1,0 +1,85 @@
+import uk.co.applylogic.marvel.buildsrc.Libs
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    lintOptions { abortOnError false }
+
+    dataBinding { enabled true }
+
+    dexOptions {
+        preDexLibraries true
+        javaMaxHeapSize "12G"
+        dexInProcess = true
+    }
+
+    defaultConfig {
+        applicationId "uk.co.applylogic.marvel.app"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests { includeAndroidResources = true }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":buildSrc")
+    implementation project(":data")
+    implementation project(":core-injection")
+    implementation project(":feature-marvel")
+
+    // Kotlin
+    implementation Libs.Kotlin.stdLibJdk8
+
+    // AndroidX
+    implementation Libs.AndroidX.multiDex
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.coreKtx
+
+    // Dagger
+    implementation Libs.Google.Dagger.dagger
+    kapt Libs.Google.Dagger.compiler
+
+    // Tests
+    testImplementation Libs.AndroidX.Test.jUnit
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.AndroidX.Test.Espresso.core
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

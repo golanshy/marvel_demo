@@ -1,0 +1,70 @@
+import uk.co.applylogic.marvel.buildsrc.Libs
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    dataBinding { enabled = true }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation project(":buildSrc")
+    implementation project(":data")
+    implementation project(":core-injection")
+    implementation project(":core-android")
+
+    implementation Libs.AndroidX.constraintLayout
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.pagingKtx
+
+    implementation Libs.AndroidX.Navigation.ktx
+    implementation Libs.AndroidX.Navigation.fragment
+
+    implementation Libs.AndroidX.Lifecycle.common
+    implementation Libs.AndroidX.Lifecycle.extensions
+    implementation Libs.AndroidX.ViewModel.ktx
+    implementation Libs.AndroidX.ViewModel.savedState
+
+    kapt Libs.AndroidX.Lifecycle.commonJava8
+
+    implementation Libs.Google.Dagger.dagger
+    kapt Libs.Google.Dagger.compiler
+
+    implementation Libs.Glide.glide
+    kapt Libs.Glide.compiler
+
+    testImplementation Libs.AndroidX.Test.jUnit
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.AndroidX.Test.Espresso.core
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

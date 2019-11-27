@@ -1,0 +1,59 @@
+import uk.co.applylogic.marvel.buildsrc.Libs
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    dataBinding { enabled = true }
+}
+
+dependencies {
+    implementation project(":buildSrc")
+
+    implementation Libs.Kotlin.stdLibJdk8
+    implementation Libs.AndroidX.legacy
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.recyclerView
+    implementation Libs.AndroidX.Navigation.ktx
+    implementation Libs.AndroidX.Navigation.fragment
+
+    implementation Libs.Google.material
+
+    implementation Libs.Glide.glide
+    kapt Libs.Glide.compiler
+    
+    // Tests
+    testImplementation Libs.AndroidX.Test.jUnit
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.AndroidX.Test.Espresso.core
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

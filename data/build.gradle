@@ -1,0 +1,68 @@
+import uk.co.applylogic.marvel.buildsrc.Libs
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+
+        buildConfigField 'String', 'MARVEL_API_URL', MARVEL_API_URL
+        buildConfigField 'String', 'MARVEL_PUBLIC_API_KEY', MARVEL_PUBLIC_API_KEY
+        buildConfigField 'String', 'MARVEL_PRIVATE_API_KEY', MARVEL_PRIVATE_API_KEY
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    dataBinding { enabled = true }
+}
+
+dependencies {
+    implementation project(":buildSrc")
+    implementation project(":core-android")
+
+    api Libs.AndroidX.multiDex
+
+    implementation Libs.AndroidX.Room.ktx
+    implementation Libs.AndroidX.Room.runtime
+    kapt Libs.AndroidX.Room.compiler
+    testImplementation Libs.AndroidX.Room.testing
+
+    implementation Libs.Kotlin.stdLibJdk8
+
+    implementation Libs.Google.gson
+
+    implementation Libs.SquareUp.OkHttp3.okHttp3
+    implementation Libs.SquareUp.OkHttp3.loggingInterceptor
+
+    implementation Libs.Google.Dagger.dagger
+    kapt Libs.Google.Dagger.compiler
+
+    // Retrofit2
+    api Libs.SquareUp.Retrofit2.retrofit
+    api Libs.SquareUp.Retrofit2.converterGson
+    api Libs.SquareUp.Retrofit2.coroutinesAdapter
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"

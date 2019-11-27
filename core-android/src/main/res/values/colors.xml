@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00afef</color>
+    <color name="colorPrimaryGradientLight">#00afef</color>
+    <color name="colorPrimaryGradientDark">#0054be</color>
+    <color name="colorPrimaryDark">#005d81</color>
+
+    <color name="colorSecurityGradientLight">#00E810</color>
+    <color name="colorSecurityGradientDark">#008300</color>
+
+    <color name="colorSecondary">#ffa800</color>
+    <color name="colorSecondaryGradientLight">#ffd300</color>
+    <color name="colorSecondaryGradientDark">#ffa800</color>
+    <color name="colorAccent">@color/colorSecondary</color>
+
+    <color name="colorSuccess">#00e810</color>
+    <color name="colorSuccessGradientLight">#00e810</color>
+    <color name="colorSuccessGradientDark">#008300</color>
+    <color name="colorError">#da1e29</color>
+    <color name="colorErrorGradientLight">#fb4b53</color>
+    <color name="colorErrorGradientDark">#a61820</color>
+
+    <color name="backgroundNatural">#F9F9F9</color>
+    <color name="greyDark">#4c4b5e</color>
+    <color name="greyMedium">#8d8d9d</color>
+    <color name="greyLight">#c7c7d4</color>
+    <color name="greyExtraLight">#f2f2f9</color>
+    <color name="white">@android:color/white</color>
+
+    <color name="whiteGradientLight">@color/white</color>
+    <color name="whiteGradientDark">#f2f2f9</color>
+
+</resources>
