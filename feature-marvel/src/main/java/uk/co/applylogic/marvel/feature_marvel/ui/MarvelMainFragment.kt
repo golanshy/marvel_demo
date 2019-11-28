@@ -15,8 +15,8 @@ import uk.co.applylogic.marvel.data.model.UIState
 import uk.co.applylogic.marvel.feature_marvel.R
 import uk.co.applylogic.marvel.feature_marvel.databinding.MainFragmentBinding
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import uk.co.applylogic.marvel.core_android.listeners.OnBottomReachedListener
+import uk.co.applylogic.marvel.data.utils.NetworkUtils
 
 
 class MarvelMainFragment : Fragment() {
@@ -68,7 +68,14 @@ class MarvelMainFragment : Fragment() {
         searchResultsAdapter = MarvelResultsAdapter(viewModelMarvel, this, mutableListOf())
         searchResultsAdapter.setOnBottomReachedListener(object : OnBottomReachedListener {
             override fun onBottomReached(position: Int) {
-                viewModelMarvel.getContent()
+                activity?.let {
+                    if (NetworkUtils.isConnected(it))
+                        viewModelMarvel.getContent()
+                    else
+                        (activity as MarvelMainActivity).comp.networkErrorHandler()
+                            .show(activity, getString(R.string.no_internet_available))
+
+                }
             }
         })
 
@@ -81,22 +88,27 @@ class MarvelMainFragment : Fragment() {
             )
             adapter = searchResultsAdapter
             addItemDecoration(dividerItemDecoration)
-
-//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                    super.onScrollStateChanged(recyclerView, newState)
-//                    if (!recyclerView.canScrollVertically(1)) {
-//                        viewModelMarvel.getContent()
-//                    }
-//                }
-//            })
         }
 
-        viewModelMarvel.searchTerm?.observe(this, Observer { newTerm ->
+        viewModelMarvel.searchTerm?.observe(this, Observer {
+            viewModelMarvel.selectedResult.value = null
             viewModelMarvel.offset = 0
             viewModelMarvel.getContent()
         })
 
-        viewModelMarvel.getContent()
+        if (viewModelMarvel.searchResults.value?.size == 0)
+            viewModelMarvel.getContent()
+
+        viewModelMarvel.selectedResult.observe(this, Observer { result ->
+            result?.let {
+
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModelMarvel.selectedResult.value = null
+
     }
 }

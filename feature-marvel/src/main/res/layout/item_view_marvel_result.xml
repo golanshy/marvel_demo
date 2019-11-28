@@ -22,7 +22,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> viewModel.onItemSelected(item)}">
+        android:onClick="@{() -> viewModel.onItemSelected(item.id)}">
 
         <ImageView
             android:id="@+id/iv_result_thumbnail"

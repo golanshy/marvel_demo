@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Marvel demo</string>
+    <string name="app_name">Marvel comics</string>
     <string name="no_results">No results</string>
     <string name="oops_something_gone_wrong_title">Oops...</string>
     <string name="connection_error">Looks like there\'s a problem.\nPlease check your Internet connection</string>
     <string name="search">Search</string>
+    <string name="no_internet_available">No internet available, please check your WiFi or data connection</string>
+    <string name="no_network_available">No network available, please check your WiFi or data connection</string>
 
 </resources>

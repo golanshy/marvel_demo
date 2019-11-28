@@ -3,15 +3,15 @@ package uk.co.applylogic.marvel.feature_marvel.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import retrofit2.Response
-import uk.co.applylogic.marvel.data.BuildConfig
 import uk.co.applylogic.marvel.data.model.MarvelResult
 import uk.co.applylogic.marvel.data.model.UIState
-import uk.co.applylogic.marvel.core_android.ktx.md5
 import uk.co.applylogic.marvel.data.model.MarvelBaseResponse
+import uk.co.applylogic.marvel.data.model.MarvelData
 import uk.co.applylogic.marvel.feature_marvel.di.ContentComponent
-import java.util.*
+import java.io.IOException
 import kotlin.collections.ArrayList
 
 class MarvelMainViewModel : ViewModel() {
@@ -20,49 +20,80 @@ class MarvelMainViewModel : ViewModel() {
     var uiState: MutableLiveData<UIState> = MutableLiveData(UIState.Initialized)
     var searchTerm: LiveData<String>? = null
     var searchResults: MutableLiveData<ArrayList<MarvelResult>> = MutableLiveData(arrayListOf())
+    var selectedResult: MutableLiveData<MarvelResult> = MutableLiveData()
     internal var offset = 0
 
     fun getContent() {
 
         uiState.value = UIState.InProgress
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             try {
-                val ts = Date().time.toString()
                 processResponse(
                     comp.contentInterface().getContent(
-                        ts,
-                        BuildConfig.MARVEL_PUBLIC_API_KEY,
-                        "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
-                        25, offset,
-                        searchTerm?.value
+                        offset = offset,
+                        title = searchTerm?.value
                     )
                 )
                 // withContext(Dispatchers.Main) {}
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 e.printStackTrace()
                 uiState.postValue(UIState.Error(0, e.localizedMessage))
+
+                comp.contentRepository().getCachedContent()?.let {
+                    processData(it)
+                }
+            }
+        }
+    }
+
+    fun onItemSelected(comicId: Int?) {
+        comicId?.let {
+            uiState.value = UIState.InProgress
+            viewModelScope.launch {
+                try {
+                    processResponse(
+                        comp.contentInterface().getComicById(comicId = it)
+                    )
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    uiState.postValue(UIState.Error(0, e.localizedMessage))
+
+                    comp.contentRepository().getCachedContentById(comicId = it)?.let {
+                        processData(it)
+                    }
+                }
             }
         }
     }
 
     private fun processResponse(response: Response<MarvelBaseResponse>?) {
+        response?.errorBody()?.let {
+            uiState.postValue(UIState.Error(response.code(), response.message()))
+        }
 
+        response?.body()?.let { body ->
+            processData(body.data)
+            viewModelScope.launch {
+                comp.contentRepository().cacheContent(body.data)
+            }
+        }
+    }
+
+    private fun processData(data: MarvelData?) {
         uiState.postValue(
-            if (offset == 0 && response?.body()?.data?.results.isNullOrEmpty())
+            if (offset == 0 && data?.results.isNullOrEmpty())
                 UIState.NoResults
             else
                 UIState.OnResults
         )
-        response?.body()?.data?.results?.let {
-            searchResults.postValue(it)
-            offset = response.body()?.data?.offset!!
-        }
-        response?.errorBody()?.let {
-            uiState.postValue(UIState.Error(response.code(), response.message()))
-        }
-    }
 
-    fun onItemSelected(result: MarvelResult) {
-
+        data?.results?.let { results ->
+            if (results.size == 1) {
+                selectedResult.postValue(results[0])
+            } else {
+                offset = data.offset!! + data.count!!
+                searchResults.postValue(results)
+            }
+        }
     }
 }

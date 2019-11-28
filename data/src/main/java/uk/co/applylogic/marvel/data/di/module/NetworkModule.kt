@@ -1,14 +1,10 @@
 package uk.co.applylogic.marvel.data.di.module
 
 import android.content.Context
-import com.openpayd.core.android.di.qualifier.HttpCache
-import com.openpayd.core.android.di.qualifier.HttpLogging
-import com.openpayd.core.android.di.qualifier.UnauthorizedInterceptor
-import com.openpayd.core.android.di.qualifier.UnauthorizedOkHttpClient
+import com.openpayd.core.android.di.qualifier.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -73,7 +69,7 @@ class NetworkModule(val context: Context) {
     internal fun provideOkHttpClient(
         @HttpLogging logger: HttpLoggingInterceptor,
         @UnauthorizedInterceptor unAuthorizedInterceptor: NonAuthInterceptor,
-        @Named("cache_interceptor") cacheInterceptor: Interceptor,
+        @Named("cache_interceptor") cacheInterceptor: CacheInterceptor,
         @HttpCache cache: Cache?
     ): OkHttpClient {
         return getOkHttpClient(
@@ -83,18 +79,18 @@ class NetworkModule(val context: Context) {
 
     private fun getOkHttpClient(
         logger: HttpLoggingInterceptor,
-        interceptor: Interceptor,
-        cacheInterceptor: Interceptor,
+        unAuthorizedInterceptor: NonAuthInterceptor,
+        cacheInterceptor: CacheInterceptor,
         cache: Cache?
     ): OkHttpClient {
 
         val okHttpBuilder = OkHttpClient.Builder()
         okHttpBuilder
+            .addInterceptor(unAuthorizedInterceptor)
             .addInterceptor(cacheInterceptor)
-            .addInterceptor(interceptor)
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES)
-            .writeTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
             .followRedirects(true)
             .followSslRedirects(true)
             .retryOnConnectionFailure(true)
@@ -137,13 +133,7 @@ class NetworkModule(val context: Context) {
     @Provides
     @Singleton
     @Named("cache_interceptor")
-    internal fun provideCacheInterceptor(): Interceptor {
+    internal fun provideCacheInterceptor(): CacheInterceptor {
         return CacheInterceptor(context)
     }
-
-//    @Provides
-//    @Singleton
-//    internal fun provideContentDatabase(): ContentDatabase {
-//        return ContentDatabase.getInstance(context)
-//    }
 }

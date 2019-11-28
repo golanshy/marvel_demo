@@ -18,7 +18,6 @@ class MarvelResultDataSource(
     PositionalDataSource<MarvelResult>() {
 
     private val items = mutableListOf<MarvelResult>()
-    private val loadSize = 25
 
     override fun loadInitial(
         params: LoadInitialParams,
@@ -37,7 +36,7 @@ class MarvelResultDataSource(
                     ts,
                     BuildConfig.MARVEL_PUBLIC_API_KEY,
                     "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
-                    loadSize = loadSize, offset = position, title = title
+                    offset = position, title = title
                 )
                 response?.let { r ->
                     if (r.isSuccessful) {
