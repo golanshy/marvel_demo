@@ -30,6 +30,12 @@ android {
         experimental = true
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     dataBinding { enabled = true }
 }
 
@@ -52,7 +58,7 @@ dependencies {
     // Tests
     testImplementation Libs.AndroidX.Test.jUnit
     androidTestImplementation Libs.AndroidX.Test.runner
-    androidTestImplementation Libs.AndroidX.Test.Espresso.core
+    androidTestImplementation Libs.AndroidX.Test.androidxTruth
 }
 
 sourceCompatibility = "8"

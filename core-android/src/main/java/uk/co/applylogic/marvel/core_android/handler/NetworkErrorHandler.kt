@@ -36,7 +36,6 @@ class NetworkErrorHandler(val context: Context) : NetworkErrorHandlerInterface {
         var lastDismissedTime: Long = 0
     }
 
-    @Suppress("MagicNumber")
     override fun show(activity: FragmentActivity?, message: String?) {
         message?.let {
             Log.e(TAG, message)
@@ -68,7 +67,6 @@ class NetworkErrorHandler(val context: Context) : NetworkErrorHandlerInterface {
 
                     val timer =
                         object : CountDownTimer(AUTO_DISMISSAL_DURATION, AUTO_DISMISSAL_DURATION) {
-                            @Suppress("EmptyFunctionBlock")
                             override fun onTick(millisUntilFinished: Long) {
                             }
 
@@ -112,11 +110,9 @@ class NetworkErrorHandler(val context: Context) : NetworkErrorHandlerInterface {
             alpha = ALPHA_1
             animate()
                 .setListener(object : Animator.AnimatorListener {
-                    @Suppress("EmptyFunctionBlock")
                     override fun onAnimationStart(animation: Animator?) {
                     }
 
-                    @Suppress("EmptyFunctionBlock")
                     override fun onAnimationRepeat(animation: Animator?) {
                     }
 
@@ -125,7 +121,6 @@ class NetworkErrorHandler(val context: Context) : NetworkErrorHandlerInterface {
                         lastDismissedTime = Date().time
                     }
 
-                    @Suppress("EmptyFunctionBlock")
                     override fun onAnimationCancel(animation: Animator?) {
                     }
                 })

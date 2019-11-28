@@ -14,8 +14,3 @@ fun loadImage(view: ImageView, imageUrl: String?) {
         .apply(RequestOptions().centerCrop())
         .into(view)
 }
-
-//@BindingAdapter("android:visibility")
-//fun setVisibility(view: View, visible: Boolean) {
-//    view.visibility = if (visible) View.VISIBLE else View.GONE
-//}

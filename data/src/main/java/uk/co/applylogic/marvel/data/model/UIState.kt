@@ -8,5 +8,3 @@ sealed class UIState {
     object NoResults: UIState()
     data class Error(val errorCode: Int, val errorMessage: String?): UIState()
 }
-
-

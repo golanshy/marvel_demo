@@ -8,35 +8,32 @@ import uk.co.applylogic.marvel.core_android.ktx.md5
 import uk.co.applylogic.marvel.data.BuildConfig
 import uk.co.applylogic.marvel.data.model.MarvelBaseResponse
 import uk.co.applylogic.marvel.data.model.MarvelData
-import uk.co.applylogic.marvel.data.model.MarvelResult
 
 const val LOAD_SIZE = 25
 const val TS = "1" // Force const timestamp to allow http caching
 
 interface ContentInterface {
-    //    https://gateway.marvel.com/v1/public/comics
-    //    ?ts=1
-    //    &apikey=3d3ce5daa8ec0f7c17afc52bb68f15f7
-    //    &hash=a45bdb0bf57b06e72ad4c2c5854e2843
+
     @GET("v1/public/comics")
     suspend fun getContent(
         @Query("ts") ts: String = TS,
         @Query("apikey") apikey: String = BuildConfig.MARVEL_PUBLIC_API_KEY,
-        @Query("hash") hash: String = "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
+        @Query("hash") hash: String =
+            "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
         @Query("limit") limit: Int = LOAD_SIZE,
         @Query("offset") offset: Int,
         @Query("title") title: String?,
-        @Query("orderBy") orderBy: String? ="-onsaleDate"
+        @Query("orderBy") orderBy: String? = "-onsaleDate"
     )
             : Response<MarvelBaseResponse>?
-
 
     @GET("v1/public/comics/{comicId}")
     suspend fun getComicById(
         @Path("comicId") comicId: Int?,
         @Query("ts") ts: String = TS,
         @Query("apikey") apikey: String = BuildConfig.MARVEL_PUBLIC_API_KEY,
-        @Query("hash") hash: String = "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5()//,
+        @Query("hash") hash: String =
+            "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5()
     )
             : Response<MarvelBaseResponse>?
 }
