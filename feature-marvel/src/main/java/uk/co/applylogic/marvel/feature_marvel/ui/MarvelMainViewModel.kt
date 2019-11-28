@@ -1,5 +1,6 @@
 package uk.co.applylogic.marvel.feature_marvel.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
@@ -17,9 +18,11 @@ class MarvelMainViewModel : ViewModel() {
 
     internal lateinit var comp: ContentComponent
     var uiState: MutableLiveData<UIState> = MutableLiveData(UIState.Initialized)
+    var searchTerm: LiveData<String>? = null
     var searchResults: MutableLiveData<ArrayList<MarvelResult>> = MutableLiveData(arrayListOf())
+    internal var offset = 0
 
-    fun getContent(title: String?) {
+    fun getContent() {
 
         uiState.value = UIState.InProgress
         CoroutineScope(Dispatchers.IO).launch {
@@ -30,8 +33,8 @@ class MarvelMainViewModel : ViewModel() {
                         ts,
                         BuildConfig.MARVEL_PUBLIC_API_KEY,
                         "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
-                        25, 0,
-                        title
+                        25, offset,
+                        searchTerm?.value
                     )
                 )
                 // withContext(Dispatchers.Main) {}
@@ -45,16 +48,21 @@ class MarvelMainViewModel : ViewModel() {
     private fun processResponse(response: Response<MarvelBaseResponse>?) {
 
         uiState.postValue(
-            if (response?.body()?.data?.results.isNullOrEmpty())
+            if (offset == 0 && response?.body()?.data?.results.isNullOrEmpty())
                 UIState.NoResults
             else
                 UIState.OnResults
         )
         response?.body()?.data?.results?.let {
             searchResults.postValue(it)
+            offset = response.body()?.data?.offset!!
         }
         response?.errorBody()?.let {
             uiState.postValue(UIState.Error(response.code(), response.message()))
         }
+    }
+
+    fun onItemSelected(result: MarvelResult) {
+
     }
 }

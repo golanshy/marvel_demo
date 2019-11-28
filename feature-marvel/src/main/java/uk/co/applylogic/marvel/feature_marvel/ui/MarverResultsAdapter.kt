@@ -3,20 +3,37 @@ package uk.co.applylogic.marvel.feature_marvel.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.collections.ArrayList
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.Glide
 import uk.co.applylogic.marvel.data.model.MarvelResult
 import uk.co.applylogic.marvel.feature_marvel.R
 import uk.co.applylogic.marvel.feature_marvel.databinding.ItemViewMarvelResultBinding
+import uk.co.applylogic.marvel.core_android.listeners.OnBottomReachedListener
+
 
 class MarvelResultsAdapter(
-    private val fragment: MarvelMainFragment,
+    val viewModel: MarvelMainViewModel,
+    fragment: MarvelMainFragment,
     private var dataSet: MutableList<MarvelResult>
 ) :
     PagedListAdapter<MarvelResult, MarvelResultsAdapter.MarvelResultViewHolder>(DiffUtilCallBack()) {
+
+    private lateinit var onBottomReachedListener: OnBottomReachedListener
+
+    init {
+        viewModel.searchResults.observe(fragment, Observer { newData ->
+            newData?.let {
+                dataSet.addAll(newData)
+                notifyDataSetChanged()
+            }
+        })
+    }
+
+    fun setOnBottomReachedListener(onBottomReachedListener: OnBottomReachedListener) {
+        this.onBottomReachedListener = onBottomReachedListener
+    }
 
     class MarvelResultViewHolder(
         private val binding: ItemViewMarvelResultBinding,
@@ -24,7 +41,7 @@ class MarvelResultsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MarvelResult?) {
             item?.let {
-                binding.adapter = adapter
+                binding.viewModel = this.adapter.viewModel
                 binding.item = item
                 binding.imageUrl = "${it.thumbnail?.path}.${it.thumbnail?.extension}"
                 binding.executePendingBindings()
@@ -34,17 +51,6 @@ class MarvelResultsAdapter(
 
     override fun getItemCount(): Int {
         return dataSet.size
-    }
-
-    fun onItemUpdated(index: Int) {
-        if (index < itemCount)
-            notifyItemChanged(index)
-    }
-
-    fun notifyDataSetChanged(newData: ArrayList<MarvelResult>) {
-        dataSet.clear()
-        dataSet.addAll(newData)
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(
@@ -59,6 +65,9 @@ class MarvelResultsAdapter(
 
     override fun onBindViewHolder(holder: MarvelResultViewHolder, position: Int) {
         holder.bind(dataSet[position])
+        if (position == dataSet.size - 1) {
+            onBottomReachedListener.onBottomReached(position)
+        }
     }
 }
 

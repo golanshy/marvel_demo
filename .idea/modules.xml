@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/marvel_demo.iml" filepath="$PROJECT_DIR$/marvel_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="marvel_demo/app" />
+      <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" group="marvel_demo/buildSrc" />
+      <module fileurl="file://$PROJECT_DIR$/core-android/core-android.iml" filepath="$PROJECT_DIR$/core-android/core-android.iml" group="marvel_demo/core-android" />
+      <module fileurl="file://$PROJECT_DIR$/core-injection/core-injection.iml" filepath="$PROJECT_DIR$/core-injection/core-injection.iml" group="marvel_demo/core-injection" />
+      <module fileurl="file://$PROJECT_DIR$/data/data.iml" filepath="$PROJECT_DIR$/data/data.iml" group="marvel_demo/data" />
+      <module fileurl="file://$PROJECT_DIR$/feature-marvel/feature-marvel.iml" filepath="$PROJECT_DIR$/feature-marvel/feature-marvel.iml" group="marvel_demo/feature-marvel" />
+      <module fileurl="file://$PROJECT_DIR$/marvel_demo.iml" filepath="$PROJECT_DIR$/marvel_demo.iml" group="marvel_demo" />
     </modules>
   </component>
 </project>

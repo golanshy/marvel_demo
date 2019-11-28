@@ -11,8 +11,8 @@
             type="uk.co.applylogic.marvel.data.model.MarvelResult" />
 
         <variable
-            name="adapter"
-            type="uk.co.applylogic.marvel.feature_marvel.ui.MarvelResultsAdapter" />
+            name="viewModel"
+            type="uk.co.applylogic.marvel.feature_marvel.ui.MarvelMainViewModel" />
 
         <variable
             name="imageUrl"
@@ -21,7 +21,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> viewModel.onItemSelected(item)}">
 
         <ImageView
             android:id="@+id/iv_result_thumbnail"

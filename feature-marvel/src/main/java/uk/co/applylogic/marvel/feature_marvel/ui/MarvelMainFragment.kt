@@ -15,10 +15,13 @@ import uk.co.applylogic.marvel.data.model.UIState
 import uk.co.applylogic.marvel.feature_marvel.R
 import uk.co.applylogic.marvel.feature_marvel.databinding.MainFragmentBinding
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import uk.co.applylogic.marvel.core_android.listeners.OnBottomReachedListener
+
 
 class MarvelMainFragment : Fragment() {
 
-    private lateinit var viewModelMarvel: MarvelMainViewModel
+    internal lateinit var viewModelMarvel: MarvelMainViewModel
     private lateinit var binding: MainFragmentBinding
     var pbVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
     var rvVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
@@ -47,7 +50,6 @@ class MarvelMainFragment : Fragment() {
 
         viewModelMarvel.uiState.observe(this, Observer { uiState ->
             pbVisibility.value = View.INVISIBLE
-            rvVisibility.value = View.INVISIBLE
             noResultsVisibility.value = View.INVISIBLE
 
             when (uiState) {
@@ -63,7 +65,12 @@ class MarvelMainFragment : Fragment() {
             }
         })
 
-        searchResultsAdapter = MarvelResultsAdapter(this, mutableListOf())
+        searchResultsAdapter = MarvelResultsAdapter(viewModelMarvel, this, mutableListOf())
+        searchResultsAdapter.setOnBottomReachedListener(object : OnBottomReachedListener {
+            override fun onBottomReached(position: Int) {
+                viewModelMarvel.getContent()
+            }
+        })
 
         rvSearchResults.apply {
             setHasFixedSize(true)
@@ -74,15 +81,22 @@ class MarvelMainFragment : Fragment() {
             )
             adapter = searchResultsAdapter
             addItemDecoration(dividerItemDecoration)
+
+//            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                    super.onScrollStateChanged(recyclerView, newState)
+//                    if (!recyclerView.canScrollVertically(1)) {
+//                        viewModelMarvel.getContent()
+//                    }
+//                }
+//            })
         }
 
-        viewModelMarvel.searchResults.observe(this, Observer { searchResults ->
-            searchResults?.let {
-                searchResultsAdapter.notifyDataSetChanged(it)
-            }
+        viewModelMarvel.searchTerm?.observe(this, Observer { newTerm ->
+            viewModelMarvel.offset = 0
+            viewModelMarvel.getContent()
         })
 
-        viewModelMarvel.getContent(null)
+        viewModelMarvel.getContent()
     }
-
 }
