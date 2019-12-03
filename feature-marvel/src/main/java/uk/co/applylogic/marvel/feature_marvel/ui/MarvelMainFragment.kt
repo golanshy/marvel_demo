@@ -23,6 +23,7 @@ class MarvelMainFragment : Fragment() {
 
     internal lateinit var viewModelMarvel: MarvelMainViewModel
     private lateinit var binding: MainFragmentBinding
+    val srlRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
     var pbVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
     var rvVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
     var noResultsVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
@@ -48,13 +49,21 @@ class MarvelMainFragment : Fragment() {
         binding.view = this
         binding.viewModel = viewModelMarvel
 
+        swipeContainer.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light)
+
         viewModelMarvel.uiState.observe(this, Observer { uiState ->
+            srlRefreshing.value = false
             pbVisibility.value = View.INVISIBLE
             noResultsVisibility.value = View.INVISIBLE
 
             when (uiState) {
                 is UIState.Initialized -> {
                 }
+                is UIState.Refreshing -> srlRefreshing.value = true
                 is UIState.InProgress -> pbVisibility.value = View.VISIBLE
                 is UIState.OnResults -> rvVisibility.value = View.VISIBLE
                 is UIState.NoResults -> noResultsVisibility.value = View.VISIBLE

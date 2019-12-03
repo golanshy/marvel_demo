@@ -14,6 +14,7 @@ object Libs {
         const val pagingKtx = "androidx.paging:paging-runtime-ktx:2.1.0"
 
         const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
+        const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0-rc01"
         const val preferenceKtx = "androidx.preference:preference-ktx:1.1.0"
         const val biometric = "androidx.biometric:biometric:1.0.0-rc02"

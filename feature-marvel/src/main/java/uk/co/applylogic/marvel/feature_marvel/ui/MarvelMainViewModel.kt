@@ -23,9 +23,20 @@ class MarvelMainViewModel : ViewModel() {
     var selectedResult: MutableLiveData<MarvelResult> = MutableLiveData()
     internal var offset = 0
 
-    fun getContent() {
+    fun reloadContent() {
+        offset = 0
+        searchResults.value?.clear()
+        uiState.value = UIState.Refreshing
+        getContent(true)
+    }
 
-        uiState.value = UIState.InProgress
+    fun getContent() {
+        getContent(false)
+    }
+
+    private fun getContent(isRefreshing: Boolean) {
+        if (!isRefreshing)
+            uiState.value = UIState.InProgress
         viewModelScope.launch {
             try {
                 processResponse(
