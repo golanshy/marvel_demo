@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ApplyLogic-marvel_demo.iml" filepath="$PROJECT_DIR$/ApplyLogic-marvel_demo.iml" group="marvel_demo" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="marvel_demo/app" />
       <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" group="marvel_demo/buildSrc" />
       <module fileurl="file://$PROJECT_DIR$/core-android/core-android.iml" filepath="$PROJECT_DIR$/core-android/core-android.iml" group="marvel_demo/core-android" />

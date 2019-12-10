@@ -31,6 +31,11 @@ class MarvelResultsAdapter(
         })
     }
 
+    fun resetData() {
+        dataSet.clear()
+        notifyDataSetChanged()
+    }
+
     fun setOnBottomReachedListener(onBottomReachedListener: OnBottomReachedListener) {
         this.onBottomReachedListener = onBottomReachedListener
     }

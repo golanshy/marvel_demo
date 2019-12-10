@@ -51,9 +51,10 @@ class MarvelMainFragment : Fragment() {
 
         swipeContainer.setColorSchemeResources(
             android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light)
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
 
         viewModelMarvel.uiState.observe(this, Observer { uiState ->
             srlRefreshing.value = false
@@ -61,8 +62,7 @@ class MarvelMainFragment : Fragment() {
             noResultsVisibility.value = View.INVISIBLE
 
             when (uiState) {
-                is UIState.Initialized -> {
-                }
+                is UIState.Initialized -> searchResultsAdapter.resetData()
                 is UIState.Refreshing -> srlRefreshing.value = true
                 is UIState.InProgress -> pbVisibility.value = View.VISIBLE
                 is UIState.OnResults -> rvVisibility.value = View.VISIBLE
@@ -99,25 +99,17 @@ class MarvelMainFragment : Fragment() {
             addItemDecoration(dividerItemDecoration)
         }
 
-        viewModelMarvel.searchTerm?.observe(this, Observer {
-            viewModelMarvel.selectedResult.value = null
-            viewModelMarvel.offset = 0
-            viewModelMarvel.getContent()
-        })
-
         if (viewModelMarvel.searchResults.value?.size == 0)
             viewModelMarvel.getContent()
 
-        viewModelMarvel.selectedResult.observe(this, Observer { result ->
-            result?.let {
 
-            }
+        viewModelMarvel.searchResults.observe(this, Observer {
+            searchResultsAdapter.notifyDataSetChanged()
         })
     }
 
     override fun onResume() {
         super.onResume()
         viewModelMarvel.selectedResult.value = null
-
     }
 }

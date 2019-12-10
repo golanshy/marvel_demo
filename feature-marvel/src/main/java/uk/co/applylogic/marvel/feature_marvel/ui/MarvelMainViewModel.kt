@@ -1,6 +1,5 @@
 package uk.co.applylogic.marvel.feature_marvel.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,10 +17,10 @@ class MarvelMainViewModel : ViewModel() {
 
     internal lateinit var comp: ContentComponent
     var uiState: MutableLiveData<UIState> = MutableLiveData(UIState.Initialized)
-    var searchTerm: LiveData<String>? = null
+    private var searchTerm: MutableLiveData<String?> = MutableLiveData(null)
     var searchResults: MutableLiveData<ArrayList<MarvelResult>> = MutableLiveData(arrayListOf())
     var selectedResult: MutableLiveData<MarvelResult> = MutableLiveData()
-    internal var offset = 0
+    private var offset = 0
 
     fun reloadContent() {
         offset = 0
@@ -34,15 +33,24 @@ class MarvelMainViewModel : ViewModel() {
         getContent(false)
     }
 
+    fun onSearchTermChanges(s: CharSequence, start: Int, before: Int, count: Int) {
+        uiState.value = UIState.Initialized
+        searchTerm.value = if (s.isEmpty()) null else s.toString()
+        selectedResult.value = null
+        offset = 0
+        getContent(true)
+    }
+
     private fun getContent(isRefreshing: Boolean) {
         if (!isRefreshing)
             uiState.value = UIState.InProgress
+
         viewModelScope.launch {
             try {
                 processResponse(
                     comp.contentInterface().getContent(
                         offset = offset,
-                        title = searchTerm?.value
+                        title = searchTerm.value
                     )
                 )
                 // withContext(Dispatchers.Main) {}
