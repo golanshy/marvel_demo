@@ -1,7 +1,6 @@
 package uk.co.applylogic.marvel.data.di.module
 
 import android.content.Context
-import com.openpayd.core.android.di.qualifier.*
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -12,6 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import uk.co.applylogic.marvel.core_android.handler.NetworkErrorHandler
 import uk.co.applylogic.marvel.core_android.handler.NetworkErrorHandlerInterface
 import uk.co.applylogic.marvel.data.BuildConfig
+import uk.co.applylogic.marvel.data.di.qualifier.HttpCache
+import uk.co.applylogic.marvel.data.di.qualifier.HttpLogging
+import uk.co.applylogic.marvel.data.di.qualifier.UnauthorizedInterceptor
+import uk.co.applylogic.marvel.data.di.qualifier.UnauthorizedOkHttpClient
 import uk.co.applylogic.marvel.data.di.scope.ContentRetrofit
 import uk.co.applylogic.marvel.data.interceptors.CacheInterceptor
 import uk.co.applylogic.marvel.data.interceptors.NonAuthInterceptor

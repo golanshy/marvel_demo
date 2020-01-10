@@ -1,4 +1,4 @@
-package com.openpayd.data.room.model
+package uk.co.applylogic.marvel.data.room.dao.model
 
 import androidx.annotation.Nullable
 import androidx.room.*

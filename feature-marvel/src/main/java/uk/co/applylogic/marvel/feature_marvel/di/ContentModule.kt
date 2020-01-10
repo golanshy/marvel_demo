@@ -1,6 +1,6 @@
 package uk.co.applylogic.marvel.feature_marvel.di
 
-import com.openpayd.core.android.di.scope.ActivityScope
+import uk.co.applylogic.marvel.data.di.scope.ActivityScope
 import dagger.Module
 import dagger.Provides
 import uk.co.applylogic.marvel.feature_marvel.ui.MarvelMainActivity

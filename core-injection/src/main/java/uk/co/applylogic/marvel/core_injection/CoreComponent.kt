@@ -2,7 +2,7 @@ package uk.co.applylogic.marvel.core_injection
 
 import android.app.Application
 import android.content.Context
-import com.openpayd.core.android.di.qualifier.ApplicationContext
+import uk.co.applylogic.marvel.data.di.qualifier.ApplicationContext
 import dagger.Component
 import uk.co.applylogic.marvel.core_android.handler.NetworkErrorHandlerInterface
 import uk.co.applylogic.marvel.data.di.module.ApplicationModule

@@ -2,7 +2,7 @@ package uk.co.applylogic.marvel.data.di.module
 
 import android.app.Application
 import android.content.Context
-import com.openpayd.core.android.di.qualifier.ApplicationContext
+import uk.co.applylogic.marvel.data.di.qualifier.ApplicationContext
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

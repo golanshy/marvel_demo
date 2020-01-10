@@ -1,4 +1,4 @@
-package com.openpayd.core.android.di.scope
+package uk.co.applylogic.marvel.data.di.scope
 
 import javax.inject.Scope
 

@@ -1,4 +1,4 @@
-package com.openpayd.core.android.di.qualifier
+package uk.co.applylogic.marvel.data.di.qualifier
 
 import javax.inject.Qualifier
 

@@ -1,7 +1,7 @@
-package com.openpayd.data.room.dao
+package uk.co.applylogic.marvel.data.room.dao
 
 import androidx.room.*
-import com.openpayd.data.room.model.ResultsModel
+import uk.co.applylogic.marvel.data.room.dao.model.ResultsModel
 
 @Dao
 interface ResultsDao {

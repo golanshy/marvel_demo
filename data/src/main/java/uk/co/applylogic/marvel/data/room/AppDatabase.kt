@@ -6,8 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.openpayd.data.room.dao.ResultsDao
-import com.openpayd.data.room.model.ResultsModel
+import uk.co.applylogic.marvel.data.room.dao.ResultsDao
+import uk.co.applylogic.marvel.data.room.dao.model.ResultsModel
 
 @Database(
         entities = [ResultsModel::class],

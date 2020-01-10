@@ -59,6 +59,5 @@ dependencies {
     androidTestImplementation Libs.AndroidX.Test.runner
     androidTestImplementation Libs.AndroidX.Test.androidxTruth
 }
-
 sourceCompatibility = "8"
 targetCompatibility = "8"
