@@ -23,7 +23,7 @@ class MarvelResultsAdapter(
     private lateinit var onBottomReachedListener: OnBottomReachedListener
 
     init {
-        viewModel.searchResults.observe(fragment, Observer { newData ->
+        viewModel.searchResults.observe(fragment.viewLifecycleOwner, Observer { newData ->
             newData?.let {
                 dataSet.addAll(newData)
                 notifyDataSetChanged()

@@ -56,7 +56,7 @@ class MarvelMainFragment : Fragment() {
             android.R.color.holo_red_light
         )
 
-        viewModelMarvel.uiState.observe(this, Observer { uiState ->
+        viewModelMarvel.uiState.observe(viewLifecycleOwner, Observer { uiState ->
             srlRefreshing.value = false
             pbVisibility.value = View.INVISIBLE
             noResultsVisibility.value = View.INVISIBLE
@@ -103,7 +103,7 @@ class MarvelMainFragment : Fragment() {
             viewModelMarvel.getContent()
 
 
-        viewModelMarvel.searchResults.observe(this, Observer {
+        viewModelMarvel.searchResults.observe(viewLifecycleOwner, Observer {
             searchResultsAdapter.notifyDataSetChanged()
         })
     }
