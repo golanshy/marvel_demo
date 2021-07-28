@@ -9,8 +9,8 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import uk.co.applylogic.marvel.data.model.MarvelResult
 import uk.co.applylogic.marvel.feature_marvel.R
-import uk.co.applylogic.marvel.feature_marvel.databinding.ItemViewMarvelResultBinding
 import uk.co.applylogic.marvel.core_android.listeners.OnBottomReachedListener
+import uk.co.applylogic.marvel.feature_marvel.databinding.ItemViewMarvelResultBinding
 
 
 class MarvelResultsAdapter(

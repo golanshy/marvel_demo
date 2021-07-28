@@ -4,20 +4,20 @@ object Libs {
 
     object AndroidX {
         const val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
-        const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-        const val activityKtx = "androidx.activity:activity-ktx:1.0.0"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.1.0"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta3"
+        const val appcompat = "androidx.appcompat:appcompat:1.3.1"
+        const val activityKtx = "androidx.activity:activity-ktx:1.3.0"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:1.4.0"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.4"
         const val multiDex = "androidx.multidex:multidex:2.0.1"
         const val androidxAnnotations = "androidx.annotation:annotation:1.1.0"
-        const val coreKtx = "androidx.core:core-ktx:1.1.0"
-        const val pagingKtx = "androidx.paging:paging-runtime-ktx:2.1.0"
+        const val coreKtx = "androidx.core:core-ktx:1.6.0"
+        const val pagingKtx = "androidx.paging:paging-runtime-ktx:3.0.1"
 
-        const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
-        const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-        const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0-rc01"
-        const val preferenceKtx = "androidx.preference:preference-ktx:1.1.0"
-        const val biometric = "androidx.biometric:biometric:1.0.0-rc02"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
+        const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+        const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0"
+        const val preferenceKtx = "androidx.preference:preference-ktx:1.1.1"
+        const val biometric = "androidx.biometric:biometric:1.1.0"
 
         object Lifecycle {
             private const val version = "2.1.0"
@@ -69,11 +69,11 @@ object Libs {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.2.0-alpha01"
-        const val gson = "com.google.code.gson:gson:2.8.5"
+        const val material = "com.google.android.material:material:1.5.0-alpha01"
+        const val gson = "com.google.code.gson:gson:2.8.7"
 
         object Dagger {
-            private const val version = "2.24"
+            private const val version = "2.38.1"
             const val dagger = "com.google.dagger:dagger:$version"
             const val compiler = "com.google.dagger:dagger-compiler:$version"
             //const val daggerAndroid = "com.google.dagger:dagger-android:$version"
@@ -84,13 +84,13 @@ object Libs {
 
     object SquareUp {
         object OkHttp3 {
-            private const val version = "4.1.0"
+            private const val version = "4.9.0"
             const val okHttp3 = "com.squareup.okhttp3:okhttp:$version"
             const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
         }
 
         object Retrofit2 {
-            private const val version = "2.6.2"
+            private const val version = "2.9.0"
             const val retrofit = "com.squareup.retrofit2:retrofit:$version"
             const val converterGson = "com.squareup.retrofit2:converter-gson:$version"
             const val coroutinesAdapter = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0"

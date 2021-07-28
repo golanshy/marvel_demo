@@ -21,7 +21,10 @@ android {
 
     lintOptions { abortOnError false }
 
-    dataBinding { enabled true }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
 
     dexOptions {
         preDexLibraries true

@@ -34,7 +34,10 @@ android {
         experimental = true
     }
 
-    dataBinding { enabled = true }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
 }
 
 dependencies {

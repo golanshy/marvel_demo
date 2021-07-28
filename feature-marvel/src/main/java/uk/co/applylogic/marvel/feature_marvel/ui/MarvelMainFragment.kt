@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.main_fragment.*
 import uk.co.applylogic.marvel.data.model.UIState
 import uk.co.applylogic.marvel.feature_marvel.R
 import uk.co.applylogic.marvel.feature_marvel.databinding.MainFragmentBinding
@@ -49,7 +48,7 @@ class MarvelMainFragment : Fragment() {
         binding.view = this
         binding.viewModel = viewModelMarvel
 
-        swipeContainer.setColorSchemeResources(
+        binding.swipeContainer.setColorSchemeResources(
             android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
@@ -88,7 +87,7 @@ class MarvelMainFragment : Fragment() {
             }
         })
 
-        rvSearchResults.apply {
+        binding.rvSearchResults.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
             val dividerItemDecoration = DividerItemDecoration(
