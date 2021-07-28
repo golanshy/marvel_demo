@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ApplyLogic.marvel_demo.iml" filepath="$PROJECT_DIR$/.idea/modules/ApplyLogic.marvel_demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/marvel_demo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/marvel_demo.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc/marvel_demo.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc/marvel_demo.buildSrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/marvel_demo.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/marvel_demo.buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-android/marvel_demo.core-android.iml" filepath="$PROJECT_DIR$/.idea/modules/core-android/marvel_demo.core-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core-injection/marvel_demo.core-injection.iml" filepath="$PROJECT_DIR$/.idea/modules/core-injection/marvel_demo.core-injection.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/data/marvel_demo.data.iml" filepath="$PROJECT_DIR$/.idea/modules/data/marvel_demo.data.iml" />

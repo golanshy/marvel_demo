@@ -20,26 +20,26 @@ object Libs {
         const val biometric = "androidx.biometric:biometric:1.1.0"
 
         object Lifecycle {
-            private const val version = "2.1.0"
+            private const val version = "2.2.0"
             const val common = "androidx.lifecycle:lifecycle-common:$version"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
             const val commonJava8 = "androidx.lifecycle:lifecycle-common-java8:$version"
         }
 
         object ViewModel {
-            private const val version = "2.1.0"
+            private const val version = "2.3.1"
             const val ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val savedState = "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc01"
         }
 
         object Navigation {
-            private const val version = "2.1.0"
+            private const val version = "2.3.5"
             const val ktx = "androidx.navigation:navigation-ui-ktx:$version"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
         }
 
         object Room {
-            private const val version = "2.2.1"
+            private const val version = "2.3.0"
             const val ktx = "androidx.room:room-ktx:$version"
             const val runtime = "androidx.room:room-runtime:$version"
             const val compiler = "androidx.room:room-compiler:$version"
