@@ -36,18 +36,13 @@ android {
 }
 
 dependencies {
-    implementation project(":data")
     implementation project(":core-injection")
-    implementation project(":core-android")
 
     implementation Libs.AndroidX.recyclerView
     implementation Libs.AndroidX.swipeRefreshLayout
     implementation Libs.AndroidX.constraintLayout
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.pagingKtx
-
-    implementation Libs.AndroidX.Navigation.ktx
-    implementation Libs.AndroidX.Navigation.fragment
 
     implementation Libs.AndroidX.Lifecycle.common
     implementation Libs.AndroidX.Lifecycle.extensions

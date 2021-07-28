@@ -40,12 +40,12 @@ android {
 }
 
 dependencies {
-    implementation Libs.Kotlin.stdLibJdk8
-    implementation Libs.AndroidX.legacy
-    implementation Libs.AndroidX.appcompat
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.Navigation.ktx
-    implementation Libs.AndroidX.Navigation.fragment
+    api Libs.Kotlin.stdLibJdk8
+    api Libs.AndroidX.legacy
+    api Libs.AndroidX.appcompat
+    api Libs.AndroidX.coreKtx
+    api Libs.AndroidX.Navigation.ktx
+    api Libs.AndroidX.Navigation.fragment
 
     implementation Libs.Google.material
 

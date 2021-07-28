@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation project(":core-android")
+    api project(":core-android")
 
     api Libs.AndroidX.multiDex
 
@@ -46,8 +46,6 @@ dependencies {
     implementation Libs.AndroidX.Room.runtime
     kapt Libs.AndroidX.Room.compiler
     testImplementation Libs.AndroidX.Room.testing
-
-    implementation Libs.Kotlin.stdLibJdk8
 
     implementation Libs.Google.gson
 
