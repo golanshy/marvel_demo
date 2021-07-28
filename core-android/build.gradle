@@ -40,8 +40,6 @@ android {
 }
 
 dependencies {
-    implementation project(":buildSrc")
-
     implementation Libs.Kotlin.stdLibJdk8
     implementation Libs.AndroidX.legacy
     implementation Libs.AndroidX.appcompat

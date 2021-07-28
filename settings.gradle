@@ -1,5 +1,4 @@
 include ':app'
-include ':buildSrc'
 include ':core-injection'
 include ':data'
 include ':feature-marvel'

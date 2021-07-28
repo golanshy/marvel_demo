@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-    implementation project(":buildSrc")
     implementation project(":core-android")
     implementation project(":data")
 

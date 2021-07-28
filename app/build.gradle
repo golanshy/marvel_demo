@@ -58,7 +58,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":buildSrc")
     implementation project(":data")
     implementation project(":core-injection")
     implementation project(":feature-marvel")
