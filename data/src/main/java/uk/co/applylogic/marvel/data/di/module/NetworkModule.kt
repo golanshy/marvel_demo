@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
-const val TEN_MB: Long = 10 * 1024 * 1024
+const val TEN_MB: Long = (10 * 1024 * 1024).toLong()
 
 @Module
 class NetworkModule(val context: Context) {

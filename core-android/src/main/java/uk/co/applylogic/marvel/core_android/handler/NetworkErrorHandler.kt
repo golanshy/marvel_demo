@@ -1,6 +1,7 @@
 package uk.co.applylogic.marvel.core_android.handler
 
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class NetworkErrorHandler(val context: Context) : NetworkErrorHandlerInterface {
         var lastDismissedTime: Long = 0
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun show(activity: FragmentActivity?, message: String?) {
         message?.let {
             Log.e(TAG, message)

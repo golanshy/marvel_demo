@@ -2,7 +2,6 @@ import uk.co.applylogic.marvel.buildsrc.Libs
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
@@ -24,12 +23,6 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
-    }
-
-    dexOptions {
-        preDexLibraries true
-        javaMaxHeapSize "12G"
-        dexInProcess = true
     }
 
     defaultConfig {
@@ -54,8 +47,8 @@ android {
         unitTests { includeAndroidResources = true }
     }
 
-    androidExtensions {
-        experimental = true
+    buildFeatures {
+        viewBinding true
     }
 }
 

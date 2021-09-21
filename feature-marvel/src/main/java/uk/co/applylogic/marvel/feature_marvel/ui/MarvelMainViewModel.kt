@@ -19,7 +19,7 @@ class MarvelMainViewModel : ViewModel() {
     var uiState: MutableLiveData<UIState> = MutableLiveData(UIState.Initialized)
     private var searchTerm: MutableLiveData<String?> = MutableLiveData(null)
     var searchResults: MutableLiveData<ArrayList<MarvelResult>> = MutableLiveData(arrayListOf())
-    var selectedResult: MutableLiveData<MarvelResult> = MutableLiveData()
+    var selectedResult: MutableLiveData<MarvelResult?> = MutableLiveData(null)
     private var offset = 0
 
     fun reloadContent() {

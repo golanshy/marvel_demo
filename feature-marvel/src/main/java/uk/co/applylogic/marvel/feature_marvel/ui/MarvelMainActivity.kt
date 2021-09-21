@@ -13,7 +13,6 @@ class MarvelMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
 
         comp = DaggerContentComponent
             .builder()
@@ -21,5 +20,7 @@ class MarvelMainActivity : AppCompatActivity() {
             .build()
 
         comp.injectActivity(this)
+
+        setContentView(R.layout.main_activity)
     }
 }

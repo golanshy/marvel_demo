@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import uk.co.applylogic.marvel.data.model.UIState
 import uk.co.applylogic.marvel.feature_marvel.R
@@ -39,9 +40,10 @@ class MarvelMainFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModelMarvel = ViewModelProviders.of(this).get(MarvelMainViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModelMarvel = ViewModelProvider(this).get(MarvelMainViewModel::class.java)
         viewModelMarvel.comp = (activity as MarvelMainActivity).comp
 
         binding.lifecycleOwner = this

@@ -11,7 +11,7 @@ object Libs {
         const val multiDex = "androidx.multidex:multidex:2.0.1"
 //        const val androidxAnnotations = "androidx.annotation:annotation:1.1.0"
         const val coreKtx = "androidx.core:core-ktx:1.6.0"
-        const val pagingKtx = "androidx.paging:paging-runtime-ktx:3.0.1"
+        const val paging = "androidx.paging:paging-runtime:3.0.1"
 
         const val recyclerView = "androidx.recyclerview:recyclerview:1.2.1"
         const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -27,7 +27,7 @@ object Libs {
         }
 
         object Navigation {
-            private const val version = "2.3.5"
+            private const val version = "2.4.0-alpha09"
             const val ktx = "androidx.navigation:navigation-ui-ktx:$version"
             const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
         }
