@@ -81,6 +81,3 @@ dependencies {
     androidTestImplementation Libs.AndroidX.Test.runner
     androidTestImplementation Libs.AndroidX.Test.Espresso.core
 }
-
-sourceCompatibility = "8"
-targetCompatibility = "8"

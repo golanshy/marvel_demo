@@ -61,6 +61,3 @@ dependencies {
     api Libs.SquareUp.Retrofit2.converterGson
     api Libs.SquareUp.Retrofit2.coroutinesAdapter
 }
-
-sourceCompatibility = "8"
-targetCompatibility = "8"

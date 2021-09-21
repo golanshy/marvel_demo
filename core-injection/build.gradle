@@ -37,5 +37,3 @@ dependencies {
 
     implementation Libs.SquareUp.OkHttp3.loggingInterceptor
 }
-sourceCompatibility = "8"
-targetCompatibility = "8"
