@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="feature-marvel/src/main/res/layout/item_view_marvel_result.xml" value="0.1" />
         <entry key="feature-marvel/src/main/res/layout/main_activity.xml" value="0.1" />
         <entry key="feature-marvel/src/main/res/layout/main_fragment.xml" value="0.1" />
       </map>

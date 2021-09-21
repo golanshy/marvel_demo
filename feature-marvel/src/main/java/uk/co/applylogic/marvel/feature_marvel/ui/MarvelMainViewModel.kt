@@ -3,7 +3,12 @@ package uk.co.applylogic.marvel.feature_marvel.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import uk.co.applylogic.marvel.data.model.MarvelResult
 import uk.co.applylogic.marvel.data.model.UIState
@@ -11,58 +16,30 @@ import uk.co.applylogic.marvel.data.model.MarvelBaseResponse
 import uk.co.applylogic.marvel.data.model.MarvelData
 import uk.co.applylogic.marvel.feature_marvel.di.ContentComponent
 import java.io.IOException
-import kotlin.collections.ArrayList
 
 class MarvelMainViewModel : ViewModel() {
 
     internal lateinit var comp: ContentComponent
     var uiState: MutableLiveData<UIState> = MutableLiveData(UIState.Initialized)
-    private var searchTerm: MutableLiveData<String?> = MutableLiveData(null)
-    var searchResults: MutableLiveData<ArrayList<MarvelResult>> = MutableLiveData(arrayListOf())
-    var selectedResult: MutableLiveData<MarvelResult?> = MutableLiveData(null)
+    private var searchTerm: MutableLiveData<String> = MutableLiveData(null)
     private var offset = 0
+
+    val searchResultsFlow: Flow<PagingData<MarvelResult>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 2),
+            pagingSourceFactory = { MarvelResultDataSource(comp.contentInterface(), searchTerm.value) }
+        ).flow.cachedIn(viewModelScope)
 
     fun reloadContent() {
         offset = 0
-        searchResults.value?.clear()
-        uiState.value = UIState.Refreshing
-        getContent(true)
-    }
-
-    fun getContent() {
-        getContent(false)
+        searchTerm.value = ""
     }
 
     fun onSearchTermChanges(s: CharSequence, start: Int, before: Int, count: Int) {
-        uiState.value = UIState.Initialized
-        searchTerm.value = if (s.isEmpty()) null else s.toString()
-        selectedResult.value = null
         offset = 0
-        getContent(true)
-    }
-
-    private fun getContent(isRefreshing: Boolean) {
-        if (!isRefreshing)
-            uiState.value = UIState.InProgress
-
-        viewModelScope.launch {
-            try {
-                processResponse(
-                    comp.contentInterface().getContent(
-                        offset = offset,
-                        title = searchTerm.value
-                    )
-                )
-                // withContext(Dispatchers.Main) {}
-            } catch (e: IOException) {
-                e.printStackTrace()
-                uiState.postValue(UIState.Error(0, e.localizedMessage))
-
-                comp.contentRepository().getCachedContent()?.let {
-                    processData(it)
-                }
-            }
-        }
+        searchTerm.value = if (s.isEmpty()) null else s.toString()
     }
 
     fun onItemSelected(comicId: Int?) {
@@ -99,20 +76,20 @@ class MarvelMainViewModel : ViewModel() {
     }
 
     private fun processData(data: MarvelData?) {
-        uiState.postValue(
-            if (offset == 0 && data?.results.isNullOrEmpty())
-                UIState.NoResults
-            else
-                UIState.OnResults
-        )
-
-        data?.results?.let { results ->
-            if (results.size == 1) {
-                selectedResult.postValue(results[0])
-            } else {
-                offset = data.offset!! + data.count!!
-                searchResults.postValue(results)
-            }
-        }
+//        uiState.postValue(
+//            if (offset == 0 && data?.results.isNullOrEmpty())
+//                UIState.NoResults
+//            else
+//                UIState.OnResults
+//        )
+//
+//        data?.results?.let { results ->
+//            if (results.size == 1) {
+//                selectedResult.postValue(results[0])
+//            } else {
+//                offset = data.offset!! + data.count!!
+//                searchResults.postValue(results)
+//            }
+//        }
     }
 }

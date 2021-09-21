@@ -1,31 +1,24 @@
 package uk.co.applylogic.marvel.feature_marvel.ui
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import uk.co.applylogic.marvel.data.model.UIState
 import uk.co.applylogic.marvel.feature_marvel.R
 import uk.co.applylogic.marvel.feature_marvel.databinding.MainFragmentBinding
 import androidx.recyclerview.widget.DividerItemDecoration
-import uk.co.applylogic.marvel.core_android.listeners.OnBottomReachedListener
-import uk.co.applylogic.marvel.data.utils.NetworkUtils
-
+import kotlinx.coroutines.flow.collectLatest
 
 class MarvelMainFragment : Fragment() {
 
-    internal lateinit var viewModelMarvel: MarvelMainViewModel
+    private lateinit var viewModelMarvel: MarvelMainViewModel
     private lateinit var binding: MainFragmentBinding
     val srlRefreshing: MutableLiveData<Boolean> = MutableLiveData(false)
-    var pbVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
-    var rvVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
     var noResultsVisibility: MutableLiveData<Int> = MutableLiveData(View.INVISIBLE)
 
     private lateinit var searchResultsAdapter: MarvelResultsAdapter
@@ -43,7 +36,7 @@ class MarvelMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModelMarvel = ViewModelProvider(this).get(MarvelMainViewModel::class.java)
+        viewModelMarvel = ViewModelProvider(this)[MarvelMainViewModel::class.java]
         viewModelMarvel.comp = (activity as MarvelMainActivity).comp
 
         binding.lifecycleOwner = this
@@ -59,14 +52,13 @@ class MarvelMainFragment : Fragment() {
 
         viewModelMarvel.uiState.observe(viewLifecycleOwner, Observer { uiState ->
             srlRefreshing.value = false
-            pbVisibility.value = View.INVISIBLE
             noResultsVisibility.value = View.INVISIBLE
 
             when (uiState) {
-                is UIState.Initialized -> searchResultsAdapter.resetData()
-                is UIState.Refreshing -> srlRefreshing.value = true
-                is UIState.InProgress -> pbVisibility.value = View.VISIBLE
-                is UIState.OnResults -> rvVisibility.value = View.VISIBLE
+                is UIState.Initialized -> {}
+                is UIState.Refreshing -> {}
+                is UIState.InProgress -> {}
+                is UIState.OnResults -> {}
                 is UIState.NoResults -> noResultsVisibility.value = View.VISIBLE
                 is UIState.Error -> {
                     (activity as MarvelMainActivity).comp.networkErrorHandler()
@@ -75,19 +67,7 @@ class MarvelMainFragment : Fragment() {
             }
         })
 
-        searchResultsAdapter = MarvelResultsAdapter(viewModelMarvel, this, mutableListOf())
-        searchResultsAdapter.setOnBottomReachedListener(object : OnBottomReachedListener {
-            override fun onBottomReached(position: Int) {
-                activity?.let {
-                    if (NetworkUtils.isConnected(it))
-                        viewModelMarvel.getContent()
-                    else
-                        (activity as MarvelMainActivity).comp.networkErrorHandler()
-                            .show(activity, getString(R.string.no_internet_available))
-
-                }
-            }
-        })
+        searchResultsAdapter = MarvelResultsAdapter()
 
         binding.rvSearchResults.apply {
             setHasFixedSize(true)
@@ -100,17 +80,10 @@ class MarvelMainFragment : Fragment() {
             addItemDecoration(dividerItemDecoration)
         }
 
-        if (viewModelMarvel.searchResults.value?.size == 0)
-            viewModelMarvel.getContent()
-
-
-        viewModelMarvel.searchResults.observe(viewLifecycleOwner, Observer {
-            searchResultsAdapter.notifyDataSetChanged()
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModelMarvel.selectedResult.value = null
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModelMarvel.searchResultsFlow.collectLatest { pagingData ->
+                searchResultsAdapter.submitData(pagingData)
+            }
+        }
     }
 }

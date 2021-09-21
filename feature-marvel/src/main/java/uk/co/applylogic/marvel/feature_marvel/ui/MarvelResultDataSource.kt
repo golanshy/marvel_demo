@@ -1,9 +1,7 @@
 package uk.co.applylogic.marvel.feature_marvel.ui
 
-import android.util.Log
-import androidx.paging.PositionalDataSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import uk.co.applylogic.marvel.core_android.ktx.md5
 import uk.co.applylogic.marvel.data.BuildConfig
 import uk.co.applylogic.marvel.data.model.MarvelResult
@@ -11,57 +9,41 @@ import uk.co.applylogic.marvel.data.repository.ContentInterface
 import java.util.*
 
 class MarvelResultDataSource(
-    private val scope: CoroutineScope,
     private val contentInterface: ContentInterface,
-    private val title: String?
+    private val searchTerm: String?
 ) :
-    PositionalDataSource<MarvelResult>() {
+    PagingSource<Int, MarvelResult>() {
 
-    private val items = mutableListOf<MarvelResult>()
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MarvelResult> {
+        val position = params.key ?: 1
+        return try {
 
-    override fun loadInitial(
-        params: LoadInitialParams,
-        callback: LoadInitialCallback<MarvelResult>
-    ) {
-        val result = loadRangeInternal(0)
-        callback.onResult(result.first, result.second, result.third)
-    }
+            val ts = Date().time.toString()
+            val response = contentInterface.getContent(
+                ts,
+                BuildConfig.MARVEL_PUBLIC_API_KEY,
+                "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
+                offset = position, title = searchTerm
+            )
 
-    private fun loadRangeInternal(position: Int): Triple<MutableList<MarvelResult>, Int, Int> {
-        var totalCount = 0
-        scope.launch {
-            try {
-                val ts = Date().time.toString()
-                val response = contentInterface.getContent(
-                    ts,
-                    BuildConfig.MARVEL_PUBLIC_API_KEY,
-                    "$ts${BuildConfig.MARVEL_PRIVATE_API_KEY}${BuildConfig.MARVEL_PUBLIC_API_KEY}".md5(),
-                    offset = position, title = title
-                )
-                response?.let { r ->
-                    if (r.isSuccessful) {
-                        r.body()?.let { body ->
-                            if (!body.data?.results.isNullOrEmpty()) {
-                                totalCount = body.data?.total!!
-                                this@MarvelResultDataSource.items.clear()
-                                this@MarvelResultDataSource.items.addAll(items)
-                            }
-                        }
-                    }
-                }
-
-            } catch (exception: Exception) {
-                Log.e("PostsDataSource", "Failed to fetch data!")
+            val pagedResponse = response?.body()
+            var nextKey = position
+            pagedResponse?.data?.let {
+                nextKey = it.offset + it.count
             }
+
+            LoadResult.Page(
+                data = pagedResponse?.data?.results.orEmpty(),
+                prevKey = null,
+                nextKey = nextKey
+            )
+        } catch (e: Exception) {
+            LoadResult.Error(e)
         }
-        return Triple(this@MarvelResultDataSource.items, position, totalCount)
     }
 
-    override fun loadRange(
-        params: LoadRangeParams,
-        callback: LoadRangeCallback<MarvelResult>
-    ) {
-        val result = loadRangeInternal(params.startPosition)
-        callback.onResult(result.first)
+    override fun getRefreshKey(state: PagingState<Int, MarvelResult>): Int? {
+        return null
     }
+
 }

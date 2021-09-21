@@ -3,89 +3,45 @@ package uk.co.applylogic.marvel.feature_marvel.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import uk.co.applylogic.marvel.data.model.MarvelResult
-import uk.co.applylogic.marvel.feature_marvel.R
-import uk.co.applylogic.marvel.core_android.listeners.OnBottomReachedListener
 import uk.co.applylogic.marvel.feature_marvel.databinding.ItemViewMarvelResultBinding
+import javax.inject.Inject
 
-
-class MarvelResultsAdapter(
-    val viewModel: MarvelMainViewModel,
-    fragment: MarvelMainFragment,
-    private var dataSet: MutableList<MarvelResult>
-) :
-    PagedListAdapter<MarvelResult, MarvelResultsAdapter.MarvelResultViewHolder>(DiffUtilCallBack()) {
-
-    private lateinit var onBottomReachedListener: OnBottomReachedListener
-
-    init {
-        viewModel.searchResults.observe(fragment.viewLifecycleOwner, Observer { newData ->
-            newData?.let {
-                dataSet.addAll(newData)
-                notifyDataSetChanged()
-            }
-        })
-    }
-
-    fun resetData() {
-        dataSet.clear()
-        notifyDataSetChanged()
-    }
-
-    fun setOnBottomReachedListener(onBottomReachedListener: OnBottomReachedListener) {
-        this.onBottomReachedListener = onBottomReachedListener
-    }
-
-    class MarvelResultViewHolder(
-        private val binding: ItemViewMarvelResultBinding,
-        private val adapter: MarvelResultsAdapter
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MarvelResult?) {
-            item?.let {
-                binding.viewModel = this.adapter.viewModel
-                binding.item = item
-                binding.imageUrl = "${it.thumbnail?.path}.${it.thumbnail?.extension}"
-                binding.executePendingBindings()
-            }
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return dataSet.size
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MarvelResultViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding: ItemViewMarvelResultBinding =
-            DataBindingUtil.inflate(layoutInflater, R.layout.item_view_marvel_result, parent, false)
-        return MarvelResultViewHolder(binding, this)
-    }
+class MarvelResultsAdapter @Inject constructor() :
+    PagingDataAdapter<MarvelResult, MarvelResultsAdapter.MarvelResultViewHolder>(CharacterComparator) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        MarvelResultViewHolder(
+            ItemViewMarvelResultBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
 
     override fun onBindViewHolder(holder: MarvelResultViewHolder, position: Int) {
-        holder.bind(dataSet[position])
-        if (position == dataSet.size - 1) {
-            onBottomReachedListener.onBottomReached(position)
+        getItem(position)?.let { holder.bind(it) }
+    }
+
+    inner class MarvelResultViewHolder(private val binding: ItemViewMarvelResultBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(result: MarvelResult?) = with(binding) {
+            result?.let {
+                item = it
+                imageUrl = it.thumbnail?.path.toString() + "." + it.thumbnail?.extension
+            }
         }
     }
-}
 
-class DiffUtilCallBack : DiffUtil.ItemCallback<MarvelResult>() {
-    override fun areItemsTheSame(oldItem: MarvelResult, newItem: MarvelResult): Boolean {
-        return oldItem.id == newItem.id
-    }
+    object CharacterComparator : DiffUtil.ItemCallback<MarvelResult>() {
+        override fun areItemsTheSame(oldItem: MarvelResult, newItem: MarvelResult) =
+            oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: MarvelResult, newItem: MarvelResult): Boolean {
-        return oldItem.title == newItem.title
-                && oldItem.title == newItem.title
-                && oldItem.description == newItem.description
-                && oldItem.thumbnail?.path == newItem.thumbnail?.path
-                && oldItem.thumbnail?.extension == newItem.thumbnail?.extension
+        override fun areContentsTheSame(oldItem: MarvelResult, newItem: MarvelResult) =
+            oldItem.title == newItem.title
+                    && oldItem.title == newItem.title
+                    && oldItem.description == newItem.description
+                    && oldItem.thumbnail?.path == newItem.thumbnail?.path
+                    && oldItem.thumbnail?.extension == newItem.thumbnail?.extension
     }
 }

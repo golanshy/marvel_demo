@@ -11,11 +11,11 @@ data class MarvelBaseResponse(
 )
 
 data class MarvelData(
-    val offset: Int?,
-    val limit: Int?,
-    val total: Int?,
-    val count: Int?,
-    val results: ArrayList<MarvelResult>?
+    val offset: Int,
+    val limit: Int,
+    val total: Int,
+    val count: Int,
+    val results: List<MarvelResult> = listOf()
 )
 
 data class MarvelResult(
